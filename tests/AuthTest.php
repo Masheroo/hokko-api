@@ -2,19 +2,20 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class AuthTest extends WebTestCase
+class AuthTest extends BaseWebTestCase
 {
     public function testSomething(): void
     {
         $client = static::createClient();
 
-        $client->request('post', '/api/login', [
+        $client->jsonRequest('post', '/api/login', [
             'username' => 'admin@admin.admin',
             'password' => 'admin123'
         ]);
 
         $this->assertResponseIsSuccessful();
+
+        $response = $this->getJsonDecodedResponse($client);
+        self::assertArrayHasKey('token', $response);
     }
 }
