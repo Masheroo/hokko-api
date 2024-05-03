@@ -5,10 +5,12 @@ namespace App\Controller\Admin;
 use App\Entity\Course;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CourseCrudController extends AbstractCrudController
 {
@@ -22,7 +24,8 @@ class CourseCrudController extends AbstractCrudController
         return [
             TextField::new('title'),
             TextEditorField::new('description'),
-            TextEditorField::new('skills')
+            TextEditorField::new('skills'),
+            Field::new('preview')->setFormType(VichImageType::class)
 //            ImageField::new('preview')
         ];
     }
