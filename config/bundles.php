@@ -12,4 +12,5 @@ return [
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
 ];
