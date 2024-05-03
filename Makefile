@@ -5,7 +5,7 @@ docker-stop:
 	docker-compose -f ./docker/docker-compose.yml stop
 
 php-bash:
-	docker exec -it hokko-fpm bash
+	docker exec -it hokko-api-fpm bash
 
 start-tests:
 	php bin/phpunit
@@ -24,3 +24,9 @@ fixtures-current:
 	symfony console d:f:l --no-interaction
 
 fixtures-all: fixtures-test fixtures-current
+
+create-test-db:
+	symfony console d:d:c --env=test
+	symfony console d:m:m --env=test --no-interaction
+	symfony console d:f:l --no-interaction --env=test
+
