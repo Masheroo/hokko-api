@@ -1,0 +1,12 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+
+    metadata:
+        type: attribute
+
+    mappings:
+        courses:
+            uri_prefix: /images/courses
+            upload_destination: default.storage
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
