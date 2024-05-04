@@ -25,7 +25,7 @@ class CourseCrudController extends AbstractCrudController
             TextField::new('title'),
             TextEditorField::new('description'),
             TextEditorField::new('skills'),
-            Field::new('preview')->setFormType(VichImageType::class)
+            Field::new('preview')->setFormType(VichImageType::class),
 //            ImageField::new('preview')
         ];
     }
