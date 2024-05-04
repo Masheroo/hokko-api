@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CourseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -18,13 +20,12 @@ class Course
     public function __construct(
         #[ORM\Column(length: 255)]
         private string $title= self::DRAFT_TITLE,
-
         #[ORM\Column(length: 255)]
         private string $description = self::DRAFT_DESCRIPTION,
-
         #[ORM\Column(length: 255)]
-        private string $skills = self::DRAFT_SKILLS
-    ) {
+    private string $skills = self::DRAFT_SKILLS)
+    {
+        $this->lessons = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -35,8 +36,14 @@ class Course
     #[Vich\UploadableField(mapping: 'courses', fileNameProperty: 'previewFilename')]
     private ?File $preview = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $previewFilename = null;
+
+    /**
+     * @var Collection<int, Lesson>
+     */
+    #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'course', orphanRemoval: true)]
+    private Collection $lessons;
 
     public function getId(): ?int
     {
@@ -91,5 +98,40 @@ class Course
     public function setPreview(?File $preview): void
     {
         $this->preview = $preview;
+    }
+
+    /**
+     * @return Collection<int, Lesson>
+     */
+    public function getLessons(): Collection
+    {
+        return $this->lessons;
+    }
+
+    public function addLesson(Lesson $lesson): static
+    {
+        if (!$this->lessons->contains($lesson)) {
+            $this->lessons->add($lesson);
+            $lesson->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLesson(Lesson $lesson): static
+    {
+        if ($this->lessons->removeElement($lesson)) {
+            // set the owning side to null (unless already changed)
+            if ($lesson->getCourse() === $this) {
+                $lesson->setCourse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }
