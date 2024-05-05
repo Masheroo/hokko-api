@@ -22,14 +22,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct(
         #[ORM\Column(length: 180)]
-        private string $email,
+        private ?string $email = null,
 
         #[ORM\Column]
-        private string $password,
+        private ?string $password = null,
     ) {
     }
     #[ORM\Column]
     private array $roles = [self::ROLE_USER];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fullName = null;
 
     public function getId(): ?int
     {
@@ -62,5 +65,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function eraseCredentials(): void
     {
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(?string $fullName): static
+    {
+        $this->fullName = $fullName;
+
+        return $this;
     }
 }
