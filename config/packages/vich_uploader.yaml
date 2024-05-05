@@ -7,6 +7,5 @@ vich_uploader:
 
     mappings:
         courses:
-            uri_prefix: /images/courses
             upload_destination: default.storage
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

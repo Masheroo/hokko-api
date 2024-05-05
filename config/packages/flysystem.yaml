@@ -3,5 +3,6 @@ flysystem:
     storages:
         default.storage:
             adapter: 'local'
+            public_url: '%env(BASE_URL)%/uploads'
             options:
-                directory: '%kernel.project_dir%/var/storage/default'
+                directory: '%kernel.project_dir%/public/uploads'
