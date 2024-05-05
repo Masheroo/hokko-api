@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Entity\Lesson;
 use App\Repository\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,5 +23,11 @@ class CourseController extends AbstractController
     public function getOne(Course $course): JsonResponse
     {
         return $this->json($course);
+    }
+
+    #[Route('/{id}/lessons', name:'get_course_lessons', methods: ['GET'])]
+    public function getLessons(Course $course): JsonResponse
+    {
+        return $this->json($course->getLessons());
     }
 }

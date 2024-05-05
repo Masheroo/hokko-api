@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\LessonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
-#[ORM\Embeddable]
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
 class Lesson
 {
@@ -28,8 +28,9 @@ class Lesson
     private ?string $text = null;
 
     #[ORM\Column]
-    private ?int $order_number = null;
+    private ?int $orderNumber = null;
 
+    #[Ignore]
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Course $course = null;
@@ -77,12 +78,12 @@ class Lesson
 
     public function getOrderNumber(): ?int
     {
-        return $this->order_number;
+        return $this->orderNumber;
     }
 
-    public function setOrderNumber(int $order_number): static
+    public function setOrderNumber(int $orderNumber): static
     {
-        $this->order_number = $order_number;
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
