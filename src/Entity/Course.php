@@ -24,9 +24,9 @@ class Course
         #[ORM\Column(length: 255)]
         private string $description = self::DRAFT_DESCRIPTION,
         #[ORM\Column(length: 255)]
-    private string $skills = self::DRAFT_SKILLS)
+        private string $skills = self::DRAFT_SKILLS)
     {
-        $this->lessons = new ArrayCollection();
+        $this->lessonBlocks = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -40,12 +40,9 @@ class Course
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $previewFilename = null;
 
-    /**
-     * @var Collection<int, Lesson>
-     */
     #[Ignore]
-    #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'course', orphanRemoval: true)]
-    private Collection $lessons;
+    #[ORM\OneToMany(targetEntity: LessonBlock::class, mappedBy: 'course')]
+    private Collection $lessonBlocks;
 
     public function getId(): ?int
     {
@@ -102,38 +99,38 @@ class Course
         $this->preview = $preview;
     }
 
-    /**
-     * @return Collection<int, Lesson>
-     */
-    public function getLessons(): Collection
+    public function __toString(): string
     {
-        return $this->lessons;
+        return $this->title;
     }
 
-    public function addLesson(Lesson $lesson): static
+    /**
+     * @return Collection<int, LessonBlock>
+     */
+    public function getLessonBlocks(): Collection
     {
-        if (!$this->lessons->contains($lesson)) {
-            $this->lessons->add($lesson);
-            $lesson->setCourse($this);
+        return $this->lessonBlocks;
+    }
+
+    public function addLessonBlock(LessonBlock $lessonBlock): static
+    {
+        if (!$this->lessonBlocks->contains($lessonBlock)) {
+            $this->lessonBlocks->add($lessonBlock);
+            $lessonBlock->setCourse($this);
         }
 
         return $this;
     }
 
-    public function removeLesson(Lesson $lesson): static
+    public function removeLessonBlock(LessonBlock $lessonBlock): static
     {
-        if ($this->lessons->removeElement($lesson)) {
+        if ($this->lessonBlocks->removeElement($lessonBlock)) {
             // set the owning side to null (unless already changed)
-            if ($lesson->getCourse() === $this) {
-                $lesson->setCourse(null);
+            if ($lessonBlock->getCourse() === $this) {
+                $lessonBlock->setCourse(null);
             }
         }
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->title;
     }
 }

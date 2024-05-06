@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LessonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
@@ -13,27 +14,32 @@ class Lesson
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['block_list'])]
     private ?int $id = null;
 
     public function __construct(
         #[ORM\Column(length: 255)]
+        #[Groups(['block_list'])]
         private string $title = "Черновик урока"
     ) {
     }
 
+    #[Groups(['block_list'])]
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $duration = null;
 
+    #[Groups(['lesson_detail'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
+    #[Groups(['block_list'])]
     #[ORM\Column]
     private ?int $orderNumber = null;
 
     #[Ignore]
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Course $course = null;
+    private ?LessonBlock $block = null;
 
     public function getId(): ?int
     {
@@ -88,14 +94,14 @@ class Lesson
         return $this;
     }
 
-    public function getCourse(): ?Course
+    public function getBlock(): ?LessonBlock
     {
-        return $this->course;
+        return $this->block;
     }
 
-    public function setCourse(?Course $course): static
+    public function setBlock(?LessonBlock $block): static
     {
-        $this->course = $course;
+        $this->block = $block;
 
         return $this;
     }

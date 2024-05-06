@@ -25,9 +25,9 @@ class CourseController extends AbstractController
         return $this->json($course);
     }
 
-    #[Route('/{id}/lessons', name:'get_course_lessons', methods: ['GET'])]
-    public function getLessons(Course $course): JsonResponse
+    #[Route('/{id}/blocks', name:'get_lesson_blocks', methods: ['GET'])]
+    public function getLessonBlocks(Course $course): JsonResponse
     {
-        return $this->json($course->getLessons());
+        return $this->json($course->getLessonBlocks(), context: ['groups' => 'block_list']);
     }
 }
