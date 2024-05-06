@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -32,7 +33,7 @@ class Course
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    #[Ignore]
     #[Vich\UploadableField(mapping: 'courses', fileNameProperty: 'previewFilename')]
     private ?File $preview = null;
 
@@ -42,6 +43,7 @@ class Course
     /**
      * @var Collection<int, Lesson>
      */
+    #[Ignore]
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'course', orphanRemoval: true)]
     private Collection $lessons;
 
